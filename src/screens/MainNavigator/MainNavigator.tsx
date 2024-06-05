@@ -12,7 +12,9 @@ export type MainNavigatorStackList = {
     callback: ({}) => void;
     photos: any;
   };
-  IndividualPhoto: undefined;
+  IndividualPhoto: {
+    photo: string;
+  };
 };
 
 export type MainUseNavigationProps<
@@ -24,7 +26,11 @@ const MainNavigator = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{title: 'Pictures Everywhere'}}>
+      <Stack.Navigator
+        screenOptions={{
+          title: 'Pictures Everywhere',
+          headerBackTitleVisible: false,
+        }}>
         <Stack.Screen name="LandingPage" component={LandingPage} />
         <Stack.Screen name="IndividualPhoto" component={IndividualPhoto} />
         <Stack.Screen

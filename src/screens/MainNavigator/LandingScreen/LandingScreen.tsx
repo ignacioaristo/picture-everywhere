@@ -4,10 +4,8 @@ import {useNavigation} from '@react-navigation/native';
 import {MainUseNavigationProps} from '../MainNavigator';
 import Button from '../../../components/Button/Button';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {mockArrayOfPhotosWithLocation} from './mock';
 
 export type PhotoData = {
-  id: number;
   location: string;
   photo: string;
 };
@@ -16,13 +14,13 @@ const LandingPage: React.FC = () => {
   const [photos, setPhotos] = React.useState<PhotoData[]>();
   const navigation = useNavigation<MainUseNavigationProps>();
 
-  const handleOnPress = () => {
-    navigation.navigate('IndividualPhoto');
+  const handleOnPress = (photo: string) => {
+    navigation.navigate('IndividualPhoto', {photo});
   };
 
   const renderItem = ({item}: {item: PhotoData}) => {
     return (
-      <TouchableOpacity onPress={handleOnPress}>
+      <TouchableOpacity onPress={() => handleOnPress(item.photo)}>
         <Image style={{width: 100, height: 100}} source={{uri: item.photo}} />
         <Text>{item.location}</Text>
       </TouchableOpacity>

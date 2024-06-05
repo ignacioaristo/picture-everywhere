@@ -35,13 +35,12 @@ const CameraFrame: React.FC = () => {
 
       const data = await camRef.current?.takePhoto({
         enableAutoRedEyeReduction: true,
-        flash: 'on',
+        flash: 'auto',
       });
 
       route.params.callback([
-        ...(route.params.photos ?? []),
+        ...(photos ?? []),
         {
-          id: 2,
           location: 'Rosario Pa',
           photo: data.path,
         },
