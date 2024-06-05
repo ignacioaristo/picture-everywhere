@@ -10,6 +10,8 @@ import {
 import NYImage from '../../../../assets/img/NY.jpg';
 import {useNavigation} from '@react-navigation/native';
 import {MainUseNavigationProps} from '../MainNavigator';
+import Button from '../../../components/Button/Button';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 type PhotoData = {
   id: number;
@@ -61,7 +63,7 @@ const LandingPage: React.FC = () => {
   };
 
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
         justifyContent: 'center',
@@ -80,7 +82,8 @@ const LandingPage: React.FC = () => {
         }}
         renderItem={renderItem}
       />
-    </View>
+      <Button />
+    </SafeAreaView>
   );
 };
 
