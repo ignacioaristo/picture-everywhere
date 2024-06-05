@@ -1,28 +1,19 @@
 import React from 'react';
-import {
-  FlatList,
-  Image,
-  ImageSourcePropType,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {FlatList, Image, Text, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {MainUseNavigationProps} from '../MainNavigator';
 import Button from '../../../components/Button/Button';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {mockArrayOfPhotosWithLocation} from './mock';
 
-type PhotoData = {
+export type PhotoData = {
   id: number;
   location: string;
-  photo: ImageSourcePropType;
+  photo: string;
 };
 
 const LandingPage: React.FC = () => {
-  const [photos, setPhotos] = React.useState<PhotoData[]>(
-    mockArrayOfPhotosWithLocation,
-  );
+  const [photos, setPhotos] = React.useState<PhotoData[]>();
   const navigation = useNavigation<MainUseNavigationProps>();
 
   const handleOnPress = () => {
@@ -32,7 +23,7 @@ const LandingPage: React.FC = () => {
   const renderItem = ({item}: {item: PhotoData}) => {
     return (
       <TouchableOpacity onPress={handleOnPress}>
-        <Image style={{width: 100, height: 100}} source={item.photo} />
+        <Image style={{width: 100, height: 100}} source={{uri: item.photo}} />
         <Text>{item.location}</Text>
       </TouchableOpacity>
     );
@@ -49,18 +40,21 @@ const LandingPage: React.FC = () => {
         width: '90%',
         height: '100%',
       }}>
-      <FlatList
-        data={photos}
-        contentContainerStyle={{
-          flex: 1,
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          gap: 20,
-          height: 500,
-        }}
-        renderItem={renderItem}
-      />
-      <Button setPhotos={setPhotos} />
+      {photos ? (
+        <FlatList
+          data={photos}
+          contentContainerStyle={{
+            flex: 1,
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            gap: 20,
+            height: 500,
+          }}
+          renderItem={renderItem}
+        />
+      ) : null}
+
+      <Button setPhotos={setPhotos} photos={photos} />
     </SafeAreaView>
   );
 };

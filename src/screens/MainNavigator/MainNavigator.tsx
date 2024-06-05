@@ -10,6 +10,7 @@ export type MainNavigatorStackList = {
   LandingPage: undefined;
   CameraFrame: {
     callback: ({}) => void;
+    photos: any;
   };
   IndividualPhoto: undefined;
 };
@@ -29,7 +30,7 @@ const MainNavigator = () => {
         <Stack.Screen
           name="CameraFrame"
           component={CameraFrame}
-          options={{headerShown: false}}
+          // options={{headerShown: false}}
         />
       </Stack.Navigator>
     </NavigationContainer>

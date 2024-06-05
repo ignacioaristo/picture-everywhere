@@ -1,11 +1,7 @@
 import React, {useEffect, useRef} from 'react';
-import {MainNavigatorStackList, MainUseNavigationProps} from '../MainNavigator';
-import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
-import {
-  Camera,
-  useCameraDevice,
-  useCameraPermission,
-} from 'react-native-vision-camera';
+import {MainNavigatorStackList} from '../MainNavigator';
+import {RouteProp, useRoute} from '@react-navigation/native';
+import {Camera, useCameraDevice} from 'react-native-vision-camera';
 import {
   TouchableWithoutFeedback,
   View,
@@ -13,10 +9,10 @@ import {
   StyleSheet,
   Linking,
 } from 'react-native';
-import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 
 const CameraFrame: React.FC = () => {
   const route = useRoute<RouteProp<MainNavigatorStackList, 'CameraFrame'>>();
+  const photos = route.params.photos;
 
   const camRef = useRef<Camera>(null);
 
@@ -42,16 +38,14 @@ const CameraFrame: React.FC = () => {
         flash: 'on',
       });
 
-      await CameraRoll.saveToCameraRoll(`file://${data.path}`, {
-        type: 'photo',
-      });
-
-      const result = await fetch(`file://${data.path}`);
-      const lafoto = await result.blob();
-
-      console.log('la foto', lafoto);
-
-      route.params.callback({photo: data.path});
+      route.params.callback([
+        ...(route.params.photos ?? []),
+        {
+          id: 2,
+          location: 'Rosario Pa',
+          photo: data.path,
+        },
+      ]);
     } catch (err: any) {
       console.log('Error: ', err);
     }

@@ -5,13 +5,15 @@ import {useNavigation} from '@react-navigation/native';
 
 type Props = {
   setPhotos: any;
+  photos: any;
 };
 
-const Button: React.FC<Props> = ({setPhotos}) => {
+const Button: React.FC<Props> = ({setPhotos, photos}) => {
   const navigation = useNavigation<MainUseNavigationProps>();
   const handleNavigation = () => {
     return navigation.navigate('CameraFrame', {
       callback: setPhotos,
+      photos,
     });
   };
 
