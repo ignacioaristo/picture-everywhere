@@ -6,22 +6,23 @@ import {
   useCameraDevice,
   useCameraPermission,
 } from 'react-native-vision-camera';
-import {TouchableWithoutFeedback, View} from 'react-native';
+import {
+  TouchableWithoutFeedback,
+  View,
+  SafeAreaView,
+  StyleSheet,
+} from 'react-native';
 
 const CameraFrame = () => {
   const device = useCameraDevice('front');
   const {hasPermission} = useCameraPermission();
-  console.log('hasPermission', hasPermission);
   const navigation = useNavigation<MainUseNavigationProps>();
 
-  // if (!hasPermission) {
-  //   return <PermissionsPage />;
-  // }
-  if (device == null) {
+  const camRef = useRef<Camera>(null);
+
+  if (device == null || !hasPermission) {
     return navigation.navigate('LandingPage');
   }
-
-  const camRef = useRef(null);
 
   const onPressHandler = async () => {
     try {
@@ -30,21 +31,31 @@ const CameraFrame = () => {
       }
 
       const data = await camRef.current?.takePhoto({
-        qualityPrioritization: 'quality',
         enableAutoRedEyeReduction: true,
-        flash: 'auto',
+        flash: 'on',
       });
 
       console.log('data', data);
     } catch (err: any) {
-      // Sentry.captureException(err);
       console.log('Error: ', err);
     }
   };
 
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Camera ref={camRef} device={device} isActive={true} photo={true} />
+    <SafeAreaView
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+      <Camera
+        ref={camRef}
+        video={true}
+        device={device}
+        isActive={true}
+        photo={true}
+        style={StyleSheet.absoluteFill}
+      />
 
       <TouchableWithoutFeedback onPress={onPressHandler}>
         <View
@@ -58,7 +69,7 @@ const CameraFrame = () => {
           }}
         />
       </TouchableWithoutFeedback>
-    </View>
+    </SafeAreaView>
   );
 };
 
