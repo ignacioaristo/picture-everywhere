@@ -3,11 +3,21 @@ import {TouchableOpacity, Text} from 'react-native';
 import {MainUseNavigationProps} from '../../screens/MainNavigator/MainNavigator';
 import {useNavigation} from '@react-navigation/native';
 
-const Button: React.FC = () => {
+type Props = {
+  setPhotos: any;
+};
+
+const Button: React.FC<Props> = ({setPhotos}) => {
   const navigation = useNavigation<MainUseNavigationProps>();
+  const handleNavigation = () => {
+    return navigation.navigate('CameraFrame', {
+      callback: setPhotos,
+    });
+  };
+
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('CameraFrame')}
+      onPress={handleNavigation}
       style={{
         alignItems: 'center',
         marginBottom: 50,

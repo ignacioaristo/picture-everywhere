@@ -7,11 +7,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import NYImage from '../../../../assets/img/NY.jpg';
 import {useNavigation} from '@react-navigation/native';
 import {MainUseNavigationProps} from '../MainNavigator';
 import Button from '../../../components/Button/Button';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {mockArrayOfPhotosWithLocation} from './mock';
 
 type PhotoData = {
   id: number;
@@ -20,34 +20,10 @@ type PhotoData = {
 };
 
 const LandingPage: React.FC = () => {
+  const [photos, setPhotos] = React.useState<PhotoData[]>(
+    mockArrayOfPhotosWithLocation,
+  );
   const navigation = useNavigation<MainUseNavigationProps>();
-  const mockArrayOfPhotosWithLocation = [
-    {
-      id: 1,
-      location: 'New York',
-      photo: NYImage,
-    },
-    {
-      id: 2,
-      location: 'Paris',
-      photo: NYImage,
-    },
-    {
-      id: 3,
-      location: 'London',
-      photo: NYImage,
-    },
-    {
-      id: 4,
-      location: 'Tokyo',
-      photo: NYImage,
-    },
-    {
-      id: 5,
-      location: 'Tokyo',
-      photo: NYImage,
-    },
-  ];
 
   const handleOnPress = () => {
     navigation.navigate('IndividualPhoto');
@@ -62,6 +38,8 @@ const LandingPage: React.FC = () => {
     );
   };
 
+  console.log('photosssss', photos);
+
   return (
     <SafeAreaView
       style={{
@@ -72,7 +50,7 @@ const LandingPage: React.FC = () => {
         height: '100%',
       }}>
       <FlatList
-        data={mockArrayOfPhotosWithLocation}
+        data={photos}
         contentContainerStyle={{
           flex: 1,
           flexDirection: 'row',
@@ -82,7 +60,7 @@ const LandingPage: React.FC = () => {
         }}
         renderItem={renderItem}
       />
-      <Button />
+      <Button setPhotos={setPhotos} />
     </SafeAreaView>
   );
 };
