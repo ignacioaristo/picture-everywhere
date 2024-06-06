@@ -32,12 +32,19 @@ const MainNavigator = () => {
           title: 'Pictures Everywhere',
           headerBackTitleVisible: false,
         }}>
-        <Stack.Screen name="LandingPage" component={LandingPage} />
+        <Stack.Screen
+          name="LandingPage"
+          component={LandingPage}
+          options={{
+            customAnimationOnGesture: false,
+            statusBarAnimation: 'fade',
+          }}
+        />
         <Stack.Screen name="IndividualPhoto" component={IndividualPhoto} />
         <Stack.Screen
           name="CameraFrame"
           component={CameraFrame}
-          // options={{headerShown: false}}
+          options={{headerShown: false, statusBarHidden: true}}
         />
       </Stack.Navigator>
     </NavigationContainer>

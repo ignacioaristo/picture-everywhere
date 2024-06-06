@@ -1,27 +1,36 @@
 import React, {useEffect, useRef} from 'react';
-import {MainNavigatorStackList} from '../MainNavigator';
-import {RouteProp, useRoute} from '@react-navigation/native';
-import {Camera, useCameraDevice} from 'react-native-vision-camera';
+import {MainNavigatorStackList, MainUseNavigationProps} from '../MainNavigator';
+import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {
-  TouchableWithoutFeedback,
+  Camera,
+  useCameraDevice,
+  useLocationPermission,
+} from 'react-native-vision-camera';
+import {
   View,
   SafeAreaView,
   StyleSheet,
   Linking,
-  Text,
-  Image,
+  TouchableOpacity,
 } from 'react-native';
 import GetLocation from 'react-native-get-location';
 import {getLocation} from '../../../components/services/getLocation';
 import {styles} from './CameraFrame.styles';
-import Switch from '../../../../assets/img/refresh.jpeg';
+import {RefreshCircle, ArrowLeft} from 'iconoir-react-native';
 
 const CameraFrame: React.FC = () => {
   const [frontCamera, setFrontCamera] = React.useState(true);
+  const navigation = useNavigation<MainUseNavigationProps>();
   const route = useRoute<RouteProp<MainNavigatorStackList, 'CameraFrame'>>();
   const photos = route.params.photos;
 
   const camRef = useRef<Camera>(null);
+
+  const {hasPermission, requestPermission} = useLocationPermission();
+
+  useEffect(() => {
+    !hasPermission && requestPermission();
+  }, []);
 
   useEffect(() => {
     const getCameraPermissions = async () => {
@@ -32,6 +41,7 @@ const CameraFrame: React.FC = () => {
     };
     getCameraPermissions();
   });
+
   const device = useCameraDevice(frontCamera ? 'front' : 'back')!;
 
   const getCurrentLocation = async () => {
@@ -73,6 +83,10 @@ const CameraFrame: React.FC = () => {
           photo: data.path,
         },
       ]);
+      navigation.navigate('IndividualPhoto', {
+        location: currentLocation!,
+        photo: data.path,
+      });
     } catch (err: any) {
       console.log('Error: ', err);
     }
@@ -90,14 +104,24 @@ const CameraFrame: React.FC = () => {
         enableLocation={true}
         style={StyleSheet.absoluteFill}
       />
+      <TouchableOpacity
+        hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
+        style={styles.backArrow}
+        onPress={() => navigation.goBack()}>
+        <ArrowLeft color="white" height={36} width={36} />
+      </TouchableOpacity>
 
-      <TouchableWithoutFeedback onPress={onPressHandler}>
-        <View style={styles.photoButton} />
-      </TouchableWithoutFeedback>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity onPress={onPressHandler} style={styles.photoButton}>
+          <View />
+        </TouchableOpacity>
 
-      <TouchableWithoutFeedback onPress={() => setFrontCamera(!frontCamera)}>
-        <Image source={Switch} style={styles.changeCamera} />
-      </TouchableWithoutFeedback>
+        <TouchableOpacity
+          onPress={() => setFrontCamera(!frontCamera)}
+          style={styles.changeCamera}>
+          <RefreshCircle color="white" height={36} width={36} />
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
