@@ -19,7 +19,7 @@ import {styles} from './CameraFrame.styles';
 import {RefreshCircle, ArrowLeft} from 'iconoir-react-native';
 
 const CameraFrame: React.FC = () => {
-  const [frontCamera, setFrontCamera] = React.useState(true);
+  const [frontCamera, setFrontCamera] = React.useState(false);
   const navigation = useNavigation<MainUseNavigationProps>();
   const route = useRoute<RouteProp<MainNavigatorStackList, 'CameraFrame'>>();
   const photos = route.params.photos;
@@ -83,10 +83,8 @@ const CameraFrame: React.FC = () => {
           photo: data.path,
         },
       ]);
-      navigation.navigate('IndividualPhoto', {
-        location: currentLocation!,
-        photo: data.path,
-      });
+
+      navigation.navigate('LandingPage');
     } catch (err: any) {
       console.log('Error: ', err);
     }

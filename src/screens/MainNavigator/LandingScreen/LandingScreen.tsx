@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, Image, TouchableOpacity} from 'react-native';
+import {FlatList, Image, TouchableOpacity, View, Text} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {MainUseNavigationProps} from '../MainNavigator';
 import Button from '../../../components/Button/Button';
@@ -38,8 +38,11 @@ const LandingPage: React.FC = () => {
           contentContainerStyle={styles.flatListContainer}
           renderItem={renderItem}
         />
-      ) : null}
-
+      ) : (
+        <View style={styles.noPhotoContainer}>
+          <Text style={styles.noPhotoText}> No photos yet, start now! </Text>
+        </View>
+      )}
       <Button setPhotos={setPhotos} photos={photos} />
     </SafeAreaView>
   );
