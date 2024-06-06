@@ -14,20 +14,20 @@ const LandingPage: React.FC = () => {
   const [photos, setPhotos] = React.useState<PhotoData[]>();
   const navigation = useNavigation<MainUseNavigationProps>();
 
-  const handleOnPress = (photo: string) => {
-    navigation.navigate('IndividualPhoto', {photo});
+  const handleOnPress = (item: PhotoData) => {
+    navigation.navigate('IndividualPhoto', {
+      photo: item.photo,
+      location: item.location,
+    });
   };
 
   const renderItem = ({item}: {item: PhotoData}) => {
     return (
-      <TouchableOpacity onPress={() => handleOnPress(item.photo)}>
+      <TouchableOpacity onPress={() => handleOnPress(item)}>
         <Image style={{width: 100, height: 100}} source={{uri: item.photo}} />
-        <Text>{item.location}</Text>
       </TouchableOpacity>
     );
   };
-
-  console.log('photosssss', photos);
 
   return (
     <SafeAreaView

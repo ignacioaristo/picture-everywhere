@@ -14,6 +14,7 @@ export type MainNavigatorStackList = {
   };
   IndividualPhoto: {
     photo: string;
+    location: string;
   };
 };
 

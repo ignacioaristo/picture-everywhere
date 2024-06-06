@@ -1,0 +1,29 @@
+{
+  "address_components": [
+    {"long_name": "2722", "short_name": "2722", "types": "asd"},
+    {"long_name": "Córdoba", "short_name": "Córdoba", "types": "asd"},
+    {
+      "long_name": "Alberto Olmedo",
+      "short_name": "Alberto Olmedo",
+      "types": "asd"
+    },
+    {"long_name": "Rosario", "short_name": "Rosario", "types": "asd"},
+    {"long_name": "Rosario", "short_name": "Rosario", "types": "asd"},
+    {"long_name": "Santa Fe", "short_name": "Santa Fe", "types": "asd"},
+    {"long_name": "Argentina", "short_name": "AR", "types": "asd"},
+    {"long_name": "S2000", "short_name": "S2000", "types": "asd"},
+    {"long_name": "KZL", "short_name": "KZL", "types": "asd"}
+  ],
+  "formatted_address": "Córdoba 2722, S2000KZL Rosario, Santa Fe, Argentina",
+  "geometry": {
+    "location": {"lat": -32.9423723, "lng": -60.66040589999999},
+    "location_type": "ROOFTOP",
+    "viewport": {"northeast": "s", "southwest": "s"}
+  },
+  "place_id": "ChIJh8cZYESrt5URn7XYIZah2rY",
+  "plus_code": {
+    "compound_code": "385Q+3R Rosario, Provincia de Santa Fe, Argentina",
+    "global_code": "47VX385Q+3R"
+  },
+  "types": ["street_address"]
+}

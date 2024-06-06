@@ -9,6 +9,8 @@ import {
   StyleSheet,
   Linking,
 } from 'react-native';
+import GetLocation from 'react-native-get-location';
+import {getLocation} from '../../../components/services/getLocation';
 
 const CameraFrame: React.FC = () => {
   const route = useRoute<RouteProp<MainNavigatorStackList, 'CameraFrame'>>();
@@ -27,6 +29,26 @@ const CameraFrame: React.FC = () => {
   });
   const device = useCameraDevice('front')!;
 
+  const getCurrentLocation = async () => {
+    let alt, long;
+
+    await GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 60000,
+    })
+      .then(location => {
+        alt = location.latitude;
+        long = location.longitude;
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
+    const responseLocation = await getLocation(alt, long);
+
+    return `${responseLocation.results[0].address_components[3].long_name}, ${responseLocation.results[0].address_components[5].long_name}, ${responseLocation.results[0].address_components[6].long_name}`;
+  };
+
   const onPressHandler = async () => {
     try {
       if (camRef.current == null) {
@@ -38,10 +60,11 @@ const CameraFrame: React.FC = () => {
         flash: 'auto',
       });
 
+      const currentLocation = await getCurrentLocation();
       route.params.callback([
         ...(photos ?? []),
         {
-          location: 'Rosario Pa',
+          location: currentLocation,
           photo: data.path,
         },
       ]);
@@ -64,6 +87,7 @@ const CameraFrame: React.FC = () => {
         isActive={true}
         photo={true}
         preview={true}
+        enableLocation={true}
         style={StyleSheet.absoluteFill}
       />
 

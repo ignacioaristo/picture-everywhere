@@ -10,10 +10,22 @@ const IndividualPhoto: React.FC = () => {
   return (
     <View>
       <Image
-        style={{resizeMode: 'cover', width: '100%', height: '80%'}}
+        style={{
+          resizeMode: 'cover',
+          width: '100%',
+          height: '80%',
+          marginTop: 40,
+        }}
         source={{uri: route.params.photo}}
       />
-      <Text>Photo</Text>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <Text>Picture location: {route.params.location}</Text>
+      </View>
     </View>
   );
 };
