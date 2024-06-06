@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {FlatList, Image, TouchableOpacity, View, Text} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {MainUseNavigationProps} from '../MainNavigator';
 import Button from '../../../components/Button/Button';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './LandingScreen.styles';
+import {useLocationPermission} from 'react-native-vision-camera';
 
 export type PhotoData = {
   location: string;
@@ -14,6 +15,11 @@ export type PhotoData = {
 const LandingPage: React.FC = () => {
   const [photos, setPhotos] = React.useState<PhotoData[]>();
   const navigation = useNavigation<MainUseNavigationProps>();
+
+  const {hasPermission, requestPermission} = useLocationPermission();
+  useEffect(() => {
+    !hasPermission && requestPermission();
+  }, []);
 
   const handleOnPress = (item: PhotoData) => {
     navigation.navigate('IndividualPhoto', {

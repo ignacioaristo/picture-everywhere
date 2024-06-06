@@ -1,18 +1,8 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useRef} from 'react';
 import {MainNavigatorStackList, MainUseNavigationProps} from '../MainNavigator';
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
-import {
-  Camera,
-  useCameraDevice,
-  useLocationPermission,
-} from 'react-native-vision-camera';
-import {
-  View,
-  SafeAreaView,
-  StyleSheet,
-  Linking,
-  TouchableOpacity,
-} from 'react-native';
+import {Camera, useCameraDevice} from 'react-native-vision-camera';
+import {View, SafeAreaView, StyleSheet, TouchableOpacity} from 'react-native';
 import GetLocation from 'react-native-get-location';
 import {getLocation} from '../../../components/services/getLocation';
 import {styles} from './CameraFrame.styles';
@@ -25,22 +15,6 @@ const CameraFrame: React.FC = () => {
   const photos = route.params.photos;
 
   const camRef = useRef<Camera>(null);
-
-  const {hasPermission, requestPermission} = useLocationPermission();
-
-  useEffect(() => {
-    !hasPermission && requestPermission();
-  }, []);
-
-  useEffect(() => {
-    const getCameraPermissions = async () => {
-      const permissions = await Camera.requestCameraPermission();
-      if (permissions === 'denied') {
-        await Linking.openSettings();
-      }
-    };
-    getCameraPermissions();
-  });
 
   const device = useCameraDevice(frontCamera ? 'front' : 'back')!;
 

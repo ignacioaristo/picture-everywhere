@@ -1,7 +1,8 @@
 import React from 'react';
-import {TouchableOpacity, Text} from 'react-native';
+import {TouchableOpacity, Text, Modal, Alert, Linking} from 'react-native';
 import {MainUseNavigationProps} from '../../screens/MainNavigator/MainNavigator';
 import {useNavigation} from '@react-navigation/native';
+import {Camera} from 'react-native-vision-camera';
 
 type Props = {
   setPhotos: any;
@@ -10,7 +11,27 @@ type Props = {
 
 const Button: React.FC<Props> = ({setPhotos, photos}) => {
   const navigation = useNavigation<MainUseNavigationProps>();
-  const handleNavigation = () => {
+
+  const handleNavigation = async () => {
+    const status = Camera.getCameraPermissionStatus();
+
+    if (status === 'denied') {
+      return Alert.alert(
+        'No camera permission',
+        'Please go to config and enable it',
+        [
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+          {
+            text: 'Go to Config',
+            onPress: async () => await Linking.openSettings(),
+          },
+        ],
+      );
+    }
+
     return navigation.navigate('CameraFrame', {
       callback: setPhotos,
       photos,

@@ -5,6 +5,7 @@ import LandingPage from './LandingScreen/LandingScreen';
 import IndividualPhoto from './IndividualPhoto/IndividualPhoto';
 import CameraFrame from './CameraFrame/CameraFrame';
 import type {StackNavigationProp} from '@react-navigation/stack';
+import BootSplash from 'react-native-bootsplash';
 
 export type MainNavigatorStackList = {
   LandingPage: undefined;
@@ -26,20 +27,13 @@ const MainNavigator = () => {
   const Stack = createNativeStackNavigator<MainNavigatorStackList>();
 
   return (
-    <NavigationContainer>
+    <NavigationContainer onReady={() => BootSplash.hide({fade: true})}>
       <Stack.Navigator
         screenOptions={{
           title: 'Pictures Everywhere',
           headerBackTitleVisible: false,
         }}>
-        <Stack.Screen
-          name="LandingPage"
-          component={LandingPage}
-          options={{
-            customAnimationOnGesture: false,
-            statusBarAnimation: 'fade',
-          }}
-        />
+        <Stack.Screen name="LandingPage" component={LandingPage} />
         <Stack.Screen name="IndividualPhoto" component={IndividualPhoto} />
         <Stack.Screen
           name="CameraFrame"
