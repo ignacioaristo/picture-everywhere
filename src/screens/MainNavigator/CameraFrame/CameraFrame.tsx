@@ -8,11 +8,16 @@ import {
   SafeAreaView,
   StyleSheet,
   Linking,
+  Text,
+  Image,
 } from 'react-native';
 import GetLocation from 'react-native-get-location';
 import {getLocation} from '../../../components/services/getLocation';
+import {styles} from './CameraFrame.styles';
+import Switch from '../../../../assets/img/refresh.jpeg';
 
 const CameraFrame: React.FC = () => {
+  const [frontCamera, setFrontCamera] = React.useState(true);
   const route = useRoute<RouteProp<MainNavigatorStackList, 'CameraFrame'>>();
   const photos = route.params.photos;
 
@@ -27,26 +32,25 @@ const CameraFrame: React.FC = () => {
     };
     getCameraPermissions();
   });
-  const device = useCameraDevice('front')!;
+  const device = useCameraDevice(frontCamera ? 'front' : 'back')!;
 
   const getCurrentLocation = async () => {
     let alt, long;
 
-    await GetLocation.getCurrentPosition({
-      enableHighAccuracy: true,
-      timeout: 60000,
-    })
-      .then(location => {
-        alt = location.latitude;
-        long = location.longitude;
-      })
-      .catch(error => {
-        console.error(error);
+    try {
+      const location = await GetLocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 60000,
       });
+      alt = location.latitude;
+      long = location.longitude;
 
-    const responseLocation = await getLocation(alt, long);
+      const responseLocation = await getLocation(alt, long);
 
-    return `${responseLocation.results[0].address_components[3].long_name}, ${responseLocation.results[0].address_components[5].long_name}, ${responseLocation.results[0].address_components[6].long_name}`;
+      return `${responseLocation.results[0].address_components[3].long_name}, ${responseLocation.results[0].address_components[5].long_name}, ${responseLocation.results[0].address_components[6].long_name}`;
+    } catch (e: any) {
+      console.log('Error: ', e);
+    }
   };
 
   const onPressHandler = async () => {
@@ -61,6 +65,7 @@ const CameraFrame: React.FC = () => {
       });
 
       const currentLocation = await getCurrentLocation();
+
       route.params.callback([
         ...(photos ?? []),
         {
@@ -74,12 +79,7 @@ const CameraFrame: React.FC = () => {
   };
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
+    <SafeAreaView style={styles.container}>
       <Camera
         ref={camRef}
         video={true}
@@ -92,16 +92,11 @@ const CameraFrame: React.FC = () => {
       />
 
       <TouchableWithoutFeedback onPress={onPressHandler}>
-        <View
-          style={{
-            width: 72,
-            height: 72,
-            borderRadius: 72 / 2,
-            backgroundColor: 'white',
-            position: 'absolute',
-            bottom: 92,
-          }}
-        />
+        <View style={styles.photoButton} />
+      </TouchableWithoutFeedback>
+
+      <TouchableWithoutFeedback onPress={() => setFrontCamera(!frontCamera)}>
+        <Image source={Switch} style={styles.changeCamera} />
       </TouchableWithoutFeedback>
     </SafeAreaView>
   );

@@ -1,9 +1,10 @@
 import React from 'react';
-import {FlatList, Image, Text, TouchableOpacity} from 'react-native';
+import {FlatList, Image, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {MainUseNavigationProps} from '../MainNavigator';
 import Button from '../../../components/Button/Button';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {styles} from './LandingScreen.styles';
 
 export type PhotoData = {
   location: string;
@@ -24,30 +25,17 @@ const LandingPage: React.FC = () => {
   const renderItem = ({item}: {item: PhotoData}) => {
     return (
       <TouchableOpacity onPress={() => handleOnPress(item)}>
-        <Image style={{width: 100, height: 100}} source={{uri: item.photo}} />
+        <Image style={styles.image} source={{uri: item.photo}} />
       </TouchableOpacity>
     );
   };
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignSelf: 'center',
-        width: '90%',
-        height: '100%',
-      }}>
+    <SafeAreaView style={styles.container}>
       {photos ? (
         <FlatList
           data={photos}
-          contentContainerStyle={{
-            flex: 1,
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-            gap: 20,
-            height: 500,
-          }}
+          contentContainerStyle={styles.flatListContainer}
           renderItem={renderItem}
         />
       ) : null}
