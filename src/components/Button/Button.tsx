@@ -1,5 +1,5 @@
 import React from 'react';
-import {TouchableOpacity, Text, Modal, Alert, Linking} from 'react-native';
+import {TouchableOpacity, Text, Alert, Linking} from 'react-native';
 import {MainUseNavigationProps} from '../../screens/MainNavigator/MainNavigator';
 import {useNavigation} from '@react-navigation/native';
 import {Camera} from 'react-native-vision-camera';

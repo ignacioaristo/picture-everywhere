@@ -1,7 +1,11 @@
 import React, {useRef} from 'react';
 import {MainNavigatorStackList, MainUseNavigationProps} from '../MainNavigator';
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
-import {Camera, useCameraDevice} from 'react-native-vision-camera';
+import {
+  Camera,
+  useCameraDevice,
+  useLocationPermission,
+} from 'react-native-vision-camera';
 import {View, SafeAreaView, StyleSheet, TouchableOpacity} from 'react-native';
 import GetLocation from 'react-native-get-location';
 import {getLocation} from '../../../components/services/getLocation';
@@ -12,6 +16,8 @@ const CameraFrame: React.FC = () => {
   const [frontCamera, setFrontCamera] = React.useState(false);
   const navigation = useNavigation<MainUseNavigationProps>();
   const route = useRoute<RouteProp<MainNavigatorStackList, 'CameraFrame'>>();
+  const {hasPermission} = useLocationPermission();
+
   const photos = route.params.photos;
 
   const camRef = useRef<Camera>(null);
@@ -48,7 +54,9 @@ const CameraFrame: React.FC = () => {
         flash: 'auto',
       });
 
-      const currentLocation = await getCurrentLocation();
+      const currentLocation = hasPermission
+        ? await getCurrentLocation()
+        : undefined;
 
       route.params.callback([
         ...(photos ?? []),
@@ -73,7 +81,7 @@ const CameraFrame: React.FC = () => {
         isActive={true}
         photo={true}
         preview={true}
-        enableLocation={true}
+        enableLocation={hasPermission}
         style={StyleSheet.absoluteFill}
       />
       <TouchableOpacity

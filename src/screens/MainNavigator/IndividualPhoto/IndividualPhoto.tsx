@@ -4,10 +4,12 @@ import {RouteProp, useRoute} from '@react-navigation/native';
 import {MainNavigatorStackList} from '../MainNavigator';
 import {styles} from './IndividualPhoto.styles';
 import {ShareIos} from 'iconoir-react-native';
+import {useLocationPermission} from 'react-native-vision-camera';
 
 const IndividualPhoto: React.FC = () => {
   const route =
     useRoute<RouteProp<MainNavigatorStackList, 'IndividualPhoto'>>();
+  const {hasPermission} = useLocationPermission();
 
   const handleOnShare = async () => {
     try {
@@ -21,7 +23,11 @@ const IndividualPhoto: React.FC = () => {
     <View style={styles.container}>
       <Image style={styles.image} source={{uri: route.params.photo}} />
       <View style={styles.location}>
-        <Text>Picture location: {route.params.location}</Text>
+        {hasPermission ? (
+          <Text>Picture location: {route.params.location}</Text>
+        ) : (
+          <Text>No location given</Text>
+        )}
       </View>
       <TouchableOpacity style={styles.share} onPress={handleOnShare}>
         <ShareIos height={36} width={36} />

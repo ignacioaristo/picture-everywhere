@@ -17,9 +17,10 @@ const LandingPage: React.FC = () => {
   const navigation = useNavigation<MainUseNavigationProps>();
 
   const {hasPermission, requestPermission} = useLocationPermission();
+
   useEffect(() => {
     !hasPermission && requestPermission();
-  }, []);
+  }, [hasPermission, requestPermission]);
 
   const handleOnPress = (item: PhotoData) => {
     navigation.navigate('IndividualPhoto', {
